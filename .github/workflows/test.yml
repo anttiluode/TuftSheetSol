@@ -10,6 +10,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check browser JavaScript syntax
+        run: node --check model.js && node --check viewer.js
       - name: Unit and intervention tests
         run: node --test tests/model.test.js
       - name: Fixed 32-seed numerical confirmation
