@@ -51,6 +51,23 @@ Use Node.js 18 or newer, without npm install:
 
 The seed-17 prototype was exploratory development. Any held-seed results must be described as **toy-model confirmation**, not as experimental neuroscience or evidence for human perceptual experience.
 
+## Fixed held-seed results (November 17, 2026)
+
+The first 32-seed confirmation run completed in the repository's [Dual sheet checks](https://github.com/anttiluode/TuftSheetSol/actions) workflow. The full machine-readable receipt is preserved as the workflow artifact named tuftsheet-sol-confirmation.
+
+| Criterion | Passed |
+| --- | ---: |
+| C1: context sign prediction after training | 32/32 |
+| C2: seeded disturbance worsens readout | 32/32 |
+| C3: active front propagates more than 13 grid cells | 32/32 |
+| C4: uncoupled readout matches context | 32/32 |
+| C5: stored context stays the same during sensory blackout | 32/32 |
+| C6: readout recovers near sham level | 32/32 |
+
+Mean context sign accuracy at the end of training: **1.000** on two simple symbolic hidden rules. At +50 ticks, the coupled wave adds **0.3351 MSE** relative to the uncoupled control; its maximal active-front radius is **22.36 grid cells**. At +160 ticks, excess MSE relative to sham is **0.000105**.
+
+**Interpretation limit:** C4 and C5 are essentially *architectural invariants* imposed by the source code and by turning sensory input off; they do not demonstrate that biological neurons autonomously preserve a world. The physical propagation under C3 is one deterministic reaction–diffusion kernel shared by all seeds; the 32 seeds vary the predictive learning history, not the wave physics. C2 is a causal result *of the hand-written physiological-to-readout coupling*. The results establish the numerical demonstration that was designed, not an independently discovered physiological mechanism.
+
 ## What is still missing
 
 - Learned boundaries instead of a pre-supplied region split.
