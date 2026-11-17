@@ -1,0 +1,25 @@
+name: Dual sheet checks
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check browser JavaScript syntax
+        run: node --check model.js && node --check viewer.js
+      - name: Unit and intervention tests
+        run: node --test tests/model.test.js
+      - name: Fixed 32-seed numerical confirmation
+        run: node experiments/confirm.js results.json
+      - name: Store confirmation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tuftsheet-sol-confirmation
+          path: results.json
+          if-no-files-found: ignore

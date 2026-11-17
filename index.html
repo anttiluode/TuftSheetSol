@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TuftSheetSol — The World and Its Medium</title>
+<meta name="description" content="A local predictive context field beside an independently excitable physical sheet. An exploratory, offline-capable laboratory.">
+<style>
+:root{color-scheme:dark;--bg:#090e17;--panel:#151d2b;--border:#344256;--txt:#eef2f8;--muted:#a5b5c9;--blue:#4f9eba;--amber:#efb267}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% -22%,#27445a 0%,var(--bg) 65%);color:var(--txt);font:15px/1.48 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1220px;padding:32px 23px 60px;margin:0 auto}
+.eyebrow{letter-spacing:.18em;font-size:11px;font-weight:700;color:#b8d5e4}
+h1{font-size:clamp(34px,5vw,64px);letter-spacing:-.055em;font-weight:750;line-height:1.02;margin:8px 0 14px}
+h1 span{color:#83c9d6}
+.lede{max-width:780px;color:#c2cdda;font-size:17px;line-height:1.6;margin:0 0 18px}
+.controls{margin:20px 0;padding:14px;background:#182232d9;border:1px solid var(--border);border-radius:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+button{font:inherit;color:#e7f7fc;padding:10px 13px;background:#243b50;border:1px solid #5a758b;border-radius:9px;cursor:pointer}
+button:hover{background:#31526c}
+button:focus-visible,input:focus-visible{outline:2px solid #a5dff3;outline-offset:3px}
+button.strong{background:#28788a;border-color:#62bac6}
+button:disabled{opacity:.55;cursor:wait}
+control{display:block}
+label{display:flex;align-items:center;gap:9px;color:#c5d3df;font-size:13px}
+input[type=range]{accent-color:#67c7dc;width:94px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 17px}
+.metric{background:#111a28e8;border:1px solid #2c4052;padding:11px 14px;border-radius:12px}
+.metric b{display:block;font-size:23px;font-weight:680;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.metric small{color:var(--muted)}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.panel{background:linear-gradient(140deg,#1b2734,#101824);border:1px solid var(--border);border-radius:14px;padding:14px;min-width:0}
+.panel h2{margin:0;font-size:17px;letter-spacing:-.02em}
+.panel p{margin:5px 0 12px;font-size:12px;color:#abbccc;min-height:35px}
+canvas{width:100%;height:auto;display:block;border-radius:7px;border:1px solid #506376;background:#111a25;image-rendering:pixelated}
+#phys{cursor:crosshair}
+.legend{display:flex;align-items:center;gap:10px;margin-top:10px;color:#aebdcb;font-size:11px;flex-wrap:wrap}
+.swatch{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:3px}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:25px;color:#c0cedc}
+.notes h3{color:#ecf4ff;margin:0 0 6px}
+.notes p{margin:0 0 8px;font-size:14px}
+.notes a{color:#92dbef}
+.status{color:#aad5e0;padding:3px 7px;font-size:12px}
+@media(max-width:780px){.wrap{padding:18px 12px 45px}.panels,.notes{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.controls{gap:7px}.panel p{min-height:0}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<div class="eyebrow">LOCAL MACHINES • SHARED CONTEXT • INDEPENDENT EXCITABILITY</div>
+<h1>Tuft<span>Sheet</span>Sol</h1>
+<p class="lede">What if the internal world remains coherent, while the medium used to read it becomes unreliable? This lab separates a slowly learned, spatially distributed prediction from an independent, propagating excitable disturbance.</p>
+<div class="controls">
+  <button id="play" class="strong">▶ Run</button>
+  <button id="reset">Reset &amp; retrain</button>
+  <button id="seed">Seed physical wave</button>
+  <button id="flipLeft">Flip left rule</button>
+  <button id="flipRight">Flip right rule</button>
+  <label>Senses <input id="senses" type="range" min="0" max="64" step="8" value="32"><output id="sensesVal">32/tick</output></label>
+  <label>Coupling <input id="coupling" type="range" min="0" max="1" step=".1" value="1"><output id="couplingVal">1.0</output></label>
+  <label>Speed <input id="speed" type="range" min="1" max="5" step="1" value="2"><output id="speedVal">2×</output></label>
+</div>
+<div class="status" id="status" aria-live="polite">Initializing…</div>
+<div class="metrics">
+  <div class="metric"><b id="ticks">0</b><small>time steps</small></div>
+  <div class="metric"><b id="ctxAcc">—</b><small>stored context sign accuracy</small></div>
+  <div class="metric"><b id="readErr">—</b><small>perceptual readout MSE</small></div>
+  <div class="metric"><b id="injury">—</b><small>mean physical disturbance</small></div>
+</div>
+<div class="panels">
+ <section class="panel"><h2>01 — Outside world</h2>
+ <p>Two independent hidden rules, displayed here for comparison. Switch either rule; no sensory signal arrives at other columns directly.</p>
+ <canvas id="world" width="480" height="240" role="img" aria-label="The hidden true rules on both halves"></canvas>
+ <div class="legend"><span><i class="swatch" style="background:#bf6a56"></i>Rule +1</span><span><i class="swatch" style="background:#4d9bbd"></i>Rule −1</span></div></section>
+ <section class="panel"><h2>02 — Internal context (φ)</h2>
+ <p>Local evidence flows sideways through a bounded diffusive sheet. The thin boundary link is supplied, not learned.</p>
+ <canvas id="context" width="480" height="240" role="img" aria-label="Distributed learned belief, two opposing regions"></canvas>
+ <div class="legend">Color = signed expectation · Gray = uncertainty · This stored state can outlive a readout disturbance.</div></section>
+ <section class="panel"><h2>03 — Perceptual readout</h2>
+ <p>The context as available to downstream interpretation: physiological suppression and spontaneous false-positive activity are explicitly coupled in.</p>
+ <canvas id="readout" width="480" height="240" role="img" aria-label="Current accessible readout, affected by physiology"></canvas>
+ <div class="legend">Set coupling to zero to compare with the identical stored context. Set senses to zero to isolate readout.</div></section>
+ <section class="panel"><h2>04 — Excitability / recovery (u, v)</h2>
+ <p>Click anywhere to seed a local disturbance. Amber = fast activator; violet = slow refractory wake. This is a generic reaction–diffusion toy.</p>
+ <canvas id="phys" width="480" height="240" role="img" aria-label="Excitation and recovery front; click to seed at a location"></canvas>
+ <div class="legend">Seeded disturbance has no sensory counterpart · No clinical time or distance calibration.</div></section>
+</div>
+<div class="notes">
+ <section><h3>Try a clean causal comparison</h3><p>Let training finish, set <strong>Senses = 0</strong>, then seed a physical wave. Compare panels 02 and 03. The underlying prediction can remain stable while the accessible readout changes. Next set <strong>Coupling = 0</strong>: the physical wave still travels, but its influence on interpretation vanishes.</p><p>Flip a region's rule and restore sensory observations to watch local surprise revise beliefs across space.</p></section>
+ <section><h3>Scientific boundary</h3><p>This is not an explanation or validated physiological simulation of migraine aura or cortical spreading depolarization. It has no ion concentrations, glia, metabolism, retinotopy or subjective-report model. The readout disruption is deliberately hand-written to make its causal role testable.</p><p><a href="./PROTOCOL.md">Protocol and controls</a> · <a href="https://github.com/anttiluode/TuftSheet">Original TuftSheet</a> · <a href="https://github.com/anttiluode/SyntheticQualia">SyntheticQualia</a> · <a href="https://github.com/anttiluode/TuftSheetSol">Source</a></p></section>
+</div>
+</main>
+<script src="./model.js"></script>
+<script src="./viewer.js"></script>
+</body>
+</html>
